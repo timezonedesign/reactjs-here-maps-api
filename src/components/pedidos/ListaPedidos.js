@@ -14,7 +14,6 @@ class ListadoPedidos extends Component {
 
     mostrarPedidos = () => {
         const pedidos = this.props.pedidos;
-
         if(pedidos.length === 0) return null
 
         return (

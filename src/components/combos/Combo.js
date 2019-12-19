@@ -26,10 +26,10 @@ class Combo extends Component {
 
     eliminarCombo = () =>{
         const {id} = this.props.info;
-
+        
         this.props.eliminarCombo(id);
     }
-
+    
     render() {
         const { Description, Name, Amount, id } = this.props.info
 

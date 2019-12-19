@@ -32,7 +32,7 @@ class Estado extends Component {
     }
 
     render() {
-        const { Description, Key, id } = this.props.info
+        const { Description, Key, id } = this.props.info;
         // console.log(this.props.info)
         return (
             <React.Fragment>

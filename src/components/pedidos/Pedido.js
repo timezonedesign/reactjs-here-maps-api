@@ -31,6 +31,7 @@ class Pedido extends Component {
     // }
     
     render() {
+        // console.log("props.info", this.props.info);
         const {id, Date} = this.props.info;
 
         var DateFormated = Date.split("T");
