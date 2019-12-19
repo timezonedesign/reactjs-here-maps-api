@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Combo from './Combo'
 
 //Redux
 import { connect } from 'react-redux';
@@ -31,7 +30,7 @@ let tHead = [
   "Acciones",
 ];
 
-class ActionButtonComponent extends React.Component {
+class ActionComboComponent extends React.Component {
 
   eliminarCombo = () => {
     const { id } = this.props.rowData;
@@ -93,7 +92,7 @@ class ListaCombos extends Component {
             <SortableTbl tblData={combos}
                 tHead={tHead}
                 customTd={[
-                            {custd: (ActionButtonComponent), keyItem: "Actions"},
+                            {custd: (ActionComboComponent), keyItem: "Actions"},
                             ]}
                 dKey={col}
                 search={true}

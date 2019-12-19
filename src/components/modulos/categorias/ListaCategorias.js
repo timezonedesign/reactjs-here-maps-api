@@ -1,10 +1,66 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+
 import Categoria from './Categoria';
+import SortableTbl from "react-sort-search-table";
 
 //Redux
 
 import { connect } from 'react-redux';
 import { mostrarCategorias } from '../../../actions/categoriasAction';
+import { eliminarCategoria } from '../../../actions/categoriasAction'
+
+const columnButtonStyle = {
+    maxWidth: "100%",
+    minWidth: "100%",
+    paddingTop: 3
+};
+
+const buttonStyle = {
+    marginLeft: 10,
+    width: 80
+};
+
+
+let col = ["Name", "Description", "Actions"];
+let tHead = [
+    "Nombre",
+    "Descripcion",
+    "Acciones",
+];
+
+class ActionCategoriasComponent extends React.Component {
+
+  eliminarCategoria = () =>{
+        const {id} = this.props.rowData;
+
+        this.props.eliminarCategoria(id);
+    }
+
+  render() {
+    const { id } = this.props.rowData;
+    return (
+      <td style={columnButtonStyle}>
+        <Link style={buttonStyle} to={{
+            pathname : `/producto/${id}`,
+            state : this.props.rowData,
+            nameCat : this.props.rowData.Name
+            }} className="btn btn-primary">
+            Ver
+        </Link>
+            
+        <Link style={buttonStyle} to={{
+            pathname : `/modulo/editar-categoria/${id}`,
+            state : this.props.rowData
+            }} className="btn btn-warning">
+            Editar
+        </Link>
+
+        <button style={buttonStyle} onClick={ this.eliminarCategoria } type="button" className="btn btn-danger">Borrar</button>
+      </td>
+    );
+  }
+}
 
 class ListadoCategorias extends Component {
 
@@ -12,40 +68,20 @@ class ListadoCategorias extends Component {
         this.props.mostrarCategorias();
     }
 
-    mostrarCategorias = () => {
+    render() {
         const categorias = this.props.categorias;
 
-        if(categorias.length === 0) return null
-
         return (
-            <React.Fragment>
-                {categorias.map(categoria => (
-
-                    <Categoria
-                        key = {categoria.id}
-                        info = {categoria}
-                    />
-
-                ))}
-            </React.Fragment>
-        )
-    }
-
-    render() {
-        return (
-            <table style={{marginTop: '10px'}} className="table">
-                <thead>
-                    <tr>
-                        <th style={{textAlign: 'center'}} scope="col">Nombre</th>
-                        <th style={{textAlign: 'center'}} scope="col">Descripcion</th>
-                        <th style={{textAlign: 'center'}} scope="col">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody style={{textAlign: 'center'}}>
-                    {this.mostrarCategorias()}
-                    {/* {console.log(this.props.empleados)} */}
-                </tbody>
-            </table>
+            <SortableTbl tblData={categorias}
+                tHead={tHead}
+                customTd={[
+                            {custd: (ActionCategoriasComponent), keyItem: "Actions"},
+                            ]}
+                dKey={col}
+                search={true}
+                defaultCSS={true}
+                eliminarCategoria = {this.props.eliminarCategoria}
+            />
         );
     }
 }
@@ -54,4 +90,7 @@ const mapStateToProps = state => ({
     categorias : state.categorias.categorias
 });
 
-export default connect(mapStateToProps, {mostrarCategorias}) (ListadoCategorias);
+export default connect(mapStateToProps, {
+    mostrarCategorias,
+    eliminarCategoria
+})(ListadoCategorias);

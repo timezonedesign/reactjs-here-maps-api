@@ -1,10 +1,36 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
+
 import Pedido from './Pedido';
 
 //Redux
 
 import { connect } from 'react-redux';
 import { mostrarPedidos } from '../../actions/pedidosAction';
+import { eliminarEmpleado } from '../../actions/empleadosAction';
+
+const columnButtonStyle = {
+    maxWidth: "100%",
+    minWidth: "100%",
+    paddingTop: 3
+};
+
+const buttonStyle = {
+    marginLeft: 10,
+    width: 80
+};
+
+
+let col = ["Name", "Description", "Amount", "Actions"];
+let tHead = [
+    "Estado",
+    "Empleado",
+    "Cliente",
+    "Direccion",
+    "Monto",
+    "Delivery",
+    "Acciones",
+];
 
 class ListadoPedidos extends Component {
 

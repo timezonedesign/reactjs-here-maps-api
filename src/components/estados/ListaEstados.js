@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 
-import Estado from './Estado'
-
 //Redux
 import { connect } from 'react-redux';
 import { mostrarEstados } from '../../actions/estadosAction';
@@ -28,7 +26,7 @@ let tHead = [
     "Acciones",
 ];
 
-class ActionButtonComponent extends React.Component {
+class ActionEstadoComponent extends React.Component {
 
   eliminarEstado = () => {
     this.props.eliminarEstado(this.props.rowData.id);
@@ -72,7 +70,7 @@ class ListaEstados extends Component {
             <SortableTbl tblData={estados}
                 tHead={tHead}
                 customTd={[
-                            {custd: (ActionButtonComponent), keyItem: "Actions"},
+                            {custd: (ActionEstadoComponent), keyItem: "Actions"},
                             ]}
                 dKey={col}
                 search={true}
