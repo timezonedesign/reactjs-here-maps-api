@@ -39,7 +39,6 @@ class ActionComboComponent extends React.Component {
   };
 
   render() {
-    console.log("action", this.props);
     const { id } = this.props.rowData;
     return (
       <td style={columnButtonStyle}>

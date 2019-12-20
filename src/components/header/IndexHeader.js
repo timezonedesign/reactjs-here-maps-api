@@ -301,58 +301,59 @@ class Header extends React.Component {
       // return 
     }
 
-    componentWillUpdate(){
+    componentDidUpdate(){
         // window.addEventListener('mouseup', )
-    }
-    
-    ProfileClose(){
+
+      }
+      
+      ProfileClose(){
         this.setState({ profile: false})
-    }
-
-    ProfileOpen(){
+      }
+      
+      ProfileOpen(){
         this.setState({ profile : true})
-    }
-
-    setRedirectToHome = () => {
-      this.setState({
-        redirectHome: true
-      })
-    }
-
-    ToHome(){
+      }
+      
+      setRedirectToHome = () => {
+        this.setState({
+          redirectHome: true
+        })
+      }
+      
+      ToHome(){
       if (this.state.redirectHome) {
         return <Redirect to='/' />
       }
     }
-
+    
     setRedirectChangePassword = () => {
       this.setState({
         redirectChangePassword: true
       })
     }
-
+    
     ToChangePassword(){
       if (this.state.redirectChangePassword) {
         return <Redirect to='/cambio-clave' />
       }
     }
-
+    
     setRedirectLogOut = () => {
       this.setState({
         redirectLogOut: true
       })
     }
-
+    
     SignOut(){
-        // console.log(this.props)
-        if (this.state.redirectLogOut) {
-          localStorage.removeItem("access-token");
-          localStorage.removeItem("categorias");
-          localStorage.removeItem("productos");
-          return <Redirect to='/login' />
-        }
+      // console.log(this.props)
+      if (this.state.redirectLogOut) {
+        localStorage.removeItem("access-token");
+        localStorage.removeItem("categorias");
+        localStorage.removeItem("productos");
+        return <Redirect to='/login' />
+      }
     }
-
+    
     statusConnection = (classes) => {
       if(localStorage.getItem('status') === 'online'){
         return <Button className={classes.buttonSizes} color="inherit" style={{ background: "linear-gradient(to left, #16DB73 0%, #85ECB6 100%)", color: '#f9f9f9' }}>En Linea</Button>
@@ -362,37 +363,37 @@ class Header extends React.Component {
     }
 
     buttonLogged(classes){
-    switch (this.props.auth.logged) {
+      switch (this.props.auth.logged) {
         case null:
-        return;
-        case true:
-        return <Button className={classes.buttonSizes} onClick= {this.setRedirectLogOut} color="inherit">Cerrar Sesión</Button>
-        case false:
-        return <Button className={classes.buttonSizes} color="inherit">Iniciar Sesión</Button>
-      }
-    };
-
-    profileMenu(props){
-        const { classes } = props;
-        
-        return(
-        <Drawer align='center' anchor="right" open={this.state.profile} >
-            <img src={roraso} className={classes.profileAvatar}  />
-            <p color="inherit" style={{textAlign: "center", marginTop: '40px', marginBottom: '5px'}} className={classes.welcomeText}>Hola {this.props.auth.user.Name}</p>
-            <p color="inherit" style={{textAlign: "center", marginTop: '20px', marginBottom: '20px'}} className={classes.welcomeText}>Panel de Configuracion</p>
-                <Button className={classes.buttonSizes} color="inherit"  onClick= {this.setRedirectToHome}>Inicio</Button>
-             {this.props.auth.logged &&   <Button className={classes.buttonSizes} color="inherit"  onClick= {this.setRedirectChangePassword}>Cambiar Contraseña</Button>}
-            {this.buttonLogged(classes)}
-            {this.statusConnection(classes)}
-            <Button  color="inherit" onClick= {this.ProfileClose} className={classes.bottomClose} >Cerrar</Button>
-            {this.SignOut()}
-            {this.ToChangePassword()}
-            {this.ToHome()}
-        </Drawer>
+          return;
+          case true:
+            return <Button className={classes.buttonSizes} onClick= {this.setRedirectLogOut} color="inherit">Cerrar Sesión</Button>
+            case false:
+              return <Button className={classes.buttonSizes} color="inherit">Iniciar Sesión</Button>
+            }
+          };
+          
+          profileMenu(props){
+            const { classes } = props;
+            
+            return(
+              <Drawer align='center' anchor="right" open={this.state.profile} onClose={this.ProfileClose} id="panel">
+                  <img src={roraso} className={classes.profileAvatar}  />
+                  <p color="inherit" style={{textAlign: "center", marginTop: '40px', marginBottom: '5px'}} className={classes.welcomeText}>Hola {this.props.auth.user.Name}</p>
+                  <p color="inherit" style={{textAlign: "center", marginTop: '20px', marginBottom: '20px'}} className={classes.welcomeText}>Panel de Configuracion</p>
+                      <Button className={classes.buttonSizes} color="inherit"  onClick= {this.setRedirectToHome}>Inicio</Button>
+                  {this.props.auth.logged &&   <Button className={classes.buttonSizes} color="inherit"  onClick= {this.setRedirectChangePassword}>Cambiar Contraseña</Button>}
+                  {this.buttonLogged(classes)}
+                  {this.statusConnection(classes)}
+                  <Button  color="inherit" onClick= {this.ProfileClose} className={classes.bottomClose} >Cerrar</Button>
+                  {this.SignOut()}
+                  {this.ToChangePassword()}
+                  {this.ToHome()}
+              </Drawer>
         )
-    }
-
-    ImageAvatars(props) {
+      }
+      
+      ImageAvatars(props) {
         const { classes } = props;
         return (
           <Button color="inherit" onClick= {this.ProfileOpen} >
@@ -401,11 +402,11 @@ class Header extends React.Component {
           </Button>
         );
       }
-
-    content(props){
+      
+      content(props){
         const { classes } = props;
         return(
-        <div className={classes.root}>
+          <div className={classes.root}>
           <AppBar position="sticky" className={classes.menu}>
             <Toolbar>
               <Button onClick={this.returnPreviusPage} color="inherit"><HistoryIcon/></Button>
@@ -419,19 +420,18 @@ class Header extends React.Component {
 
         </div>
         )
-    }
-
-
- render() {
-   
-  console.log(this.props.auth.user)
-  return (
-    <div>
+      }
+      
+      
+      render() {
+        
+        return (
+          <div>
         {this.content(this.props)}
     </div>
   );
 }
-    
+
 }
 Header.propTypes = {
   classes: PropTypes.object.isRequired,

@@ -398,7 +398,7 @@ class NuevoPedido extends Component {
 
     buscarDireccion = () => {
       
-      axios.get(`https://roraso.herokuapp.com/Client/Client?Phone=${this.state.telefonoClient}`,
+      axios.get(`https://roraso.herokuapp.com/Client/Clients?Phone=${this.state.telefonoClient}`,
       { headers: { 'access-token': localStorage.getItem('access-token')}})
       .then(res => {
           if(res.status === 200){
