@@ -34,9 +34,14 @@ class Pedido extends Component {
         // console.log("props.info", this.props.info);
         const {id, Date} = this.props.info;
 
-        var DateFormated = Date.split("T");
+        if (Date !== null) {
 
-        var HourFormated = DateFormated[1].split(".")
+            var DateFormated = Date.split("T");
+            var HourFormated = DateFormated[1].split(".");
+            Date = DateFormated[0] + " " + HourFormated[0];
+        }
+
+
 
         // console.log(DateFormated);
 
@@ -60,7 +65,7 @@ class Pedido extends Component {
         return (
             <React.Fragment>
             <tr>
-                <td style={tableStyle}>{DateFormated[0] + " " + HourFormated[0]}</td>
+                <td style={tableStyle}>{Date}</td>
                 <td style={tableStyle}>{State}</td>
                 <td style={tableStyle}>{Users}</td>
                 <td style={tableStyle}>{Clients.substr(0,8)}</td>

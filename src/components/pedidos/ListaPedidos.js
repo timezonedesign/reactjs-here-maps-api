@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 
 import Pedido from './Pedido';
+import SortableTbl from "react-sort-search-table";
 
 //Redux
 
@@ -21,8 +22,9 @@ const buttonStyle = {
 };
 
 
-let col = ["Name", "Description", "Amount", "Actions"];
+let col = ["pedDate", "State", "Users", "pedClients", "Adress", "Amount", "Deliverys", "Actions"];
 let tHead = [
+    "Fecha",
     "Estado",
     "Empleado",
     "Cliente",
@@ -32,53 +34,86 @@ let tHead = [
     "Acciones",
 ];
 
+class ActionEmpleadoComponent extends React.Component {
+
+  eliminarEmpleado = () =>{
+      const {id} = this.props.rowData;
+
+      this.props.eliminarEmpleado(id);
+  }
+
+  render() {
+    const { id } = this.props.rowData;
+    return (
+        <td style={columnButtonStyle}>
+            <Link style={buttonStyle} to={{
+                pathname : `/pedidos/${id}`,
+                state : this.props.rowData
+                }} className="btn btn-primary">
+                Ver
+            </Link>
+
+            <Link style={buttonStyle} to={{
+                pathname : `/rrhh/editar-empleados/${id}`,
+                state : this.props.rowData
+                }} className="btn btn-warning">
+                Editar
+            </Link>
+
+            <button style={buttonStyle} onClick={ this.eliminarEmpleado } type="button" className="btn btn-danger">Borrar</button>
+        </td> 
+    );
+  }
+}
+
 class ListadoPedidos extends Component {
 
     componentDidMount(){
         this.props.mostrarPedidos();
     }
 
-    mostrarPedidos = () => {
-        const pedidos = this.props.pedidos;
-        if(pedidos.length === 0) return null
-
-        return (
-            <React.Fragment>
-                {pedidos.map(pedido => (
-
-                    // console.log(pedido)
-                    <Pedido
-                        key = {pedido.id}
-                        info = {pedido}
-                        // borrarEmpleado = {this.props.borrarEmpleado}
-                    />
-
-                ))}
-                
-            </React.Fragment>
-        )
-    }
-
     render() {
+
+        const pedidos = this.props.pedidos;
+
+        console.log(pedidos);
+        for (var i = 0; i < pedidos.length; i++) {
+            if (pedidos[i].Date !== null) {
+
+                var DateFormated = pedidos[i].Date.split("T");
+                var HourFormated = DateFormated[1].split(".");
+                pedidos[i].pedDate = DateFormated[0] + " " + HourFormated[0];
+            } else {
+                pedidos[i].pedDate = pedidos[i].Date;
+            }
+            pedidos[i].Users = pedidos[i].Users.Dni;
+            pedidos[i].State = pedidos[i].State.Description;
+            pedidos[i].Clients = (pedidos[i].Clients.Name + " " + pedidos[i].Clients.LastName).substr(0, 8);
+            pedidos[i].Adress = pedidos[i].Adress.Adress + " " + pedidos[i].Adress.Floor + " " + pedidos[i].Adress.Department;
+            pedidos[i].Amount = pedidos[i].Amount.toFixed(0);
+
+            pedidos[i].Deliverys = pedidos[i].Delivery.Name + pedidos[i].Delivery.LastName;
+
+            if (pedidos[i].Deliverys == null) {
+                pedidos[i].Deliverys = "Sin Asignar"
+            } else {
+                pedidos[i].Deliverys = pedidos[i].Delivery.Name + " " + pedidos[i].Delivery.LastName;
+            }
+        }
+
+        if (pedidos.length === 0) return null;
+        else
         return (
-            <table style={{marginTop: '10px'}} className="table">
-                <thead>
-                    <tr>
-                        <th style={{textAlign: 'center'}} scope="col">Fecha</th>
-                        <th style={{textAlign: 'center'}} scope="col">Estado</th>
-                        <th style={{textAlign: 'center'}} scope="col">Empleado</th>
-                        <th style={{textAlign: 'center'}} scope="col">Cliente</th>
-                        <th style={{textAlign: 'center'}} scope="col">Direccion</th>
-                        <th style={{textAlign: 'center'}} scope="col">Monto</th>
-                        <th style={{textAlign: 'center'}} scope="col">Delivery</th>
-                        <th style={{textAlign: 'center'}} scope="col">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody style={{textAlign: 'center'}}>
-                    {this.mostrarPedidos()}
-                    {/* {console.log(this.props.empleados)} */}
-                </tbody>
-            </table>
+            <SortableTbl tblData={pedidos}
+                tHead={tHead}
+                customTd={[
+                            {custd: (ActionEmpleadoComponent), keyItem: "Actions"},
+                            ]}
+                dKey={col}
+                search={true}
+                defaultCSS={true}
+                eliminarEmpleado = {this.props.eliminarEmpleado}
+            />
         );
     }
 }
@@ -87,4 +122,7 @@ const mapStateToProps = state => ({
     pedidos : state.pedidos.pedidos
 });
 
-export default connect(mapStateToProps, {mostrarPedidos}) (ListadoPedidos);
+export default connect(mapStateToProps, {
+    mostrarPedidos,
+    eliminarEmpleado
+})(ListadoPedidos);
