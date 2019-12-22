@@ -1,4 +1,4 @@
-import { MOSTRAR_PEDIDOS, MOSTRAR_PEDIDO, AGREGAR_PEDIDO, EDITAR_PEDIDO, BORRAR_PEDIDO } from '../actions/types';
+import { MOSTRAR_PEDIDOS, MOSTRAR_PEDIDO, AGREGAR_PEDIDO, EDITAR_PEDIDO, BORRAR_PEDIDO, ASIGNAR_DELIVERY } from '../actions/types';
 import axios from 'axios';
 
 //CSS
@@ -114,6 +114,60 @@ export const agregarPedido = (pedido) => async dispatch => {
         payload: pedido
     })
 }
+
+export const asignarDelivery = (line) => async dispatch => {
+
+    const data = {
+        "Delivery": {
+            "id": line[1]
+        },
+        "Pedido": {
+            "id": line[0]
+        }
+    }
+    // console.log(data);
+    await axios.post("https://roraso.herokuapp.com/Pedido/Asignar", data, {
+            headers: {
+                'access-token': localStorage.getItem('access-token')
+            }
+        })
+        .then(res => {
+            if (res.status === 200 || res.status === 500) {
+                Swal.fire({
+                    title: 'Correcto!',
+                    text: 'Se ha añadido un nuevo pedido',
+                    type: 'success',
+                    confirmButtonText: 'Sera Redirigido'
+                })
+                setTimeout(function () {
+                    // window.location.href = "http://localhost:3000/mapa";
+                }, 1500);
+            } else {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Se ha producido un error al intentar crear el pedido',
+                    type: 'error',
+                    confirmButtonText: 'Reintentar'
+                })
+                return;
+            }
+        })
+        .catch(err => {
+            Swal.fire({
+                title: 'Error!',
+                text: 'El Servidor no ha respondido la solicitud',
+                type: 'error',
+                confirmButtonText: 'Reintentar'
+            })
+            return;
+        })
+
+    dispatch({
+        type: ASIGNAR_DELIVERY,
+        payload: line,
+    })
+}
+
 
 // export const editarRol = (rol) => async dispatch => {
     
