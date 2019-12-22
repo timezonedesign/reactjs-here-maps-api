@@ -82,6 +82,7 @@ import AgregarDireccionCliente from './components/cliente/AgregarDireccionClient
 
 //Mapa con Pedidos
 import AsignarPedido from './components/pedidos/mapaPedidos/AsignarPedido'
+import EditarOrder from './components/pedidos/mapaPedidos/editarOrder'
 
 class Routes extends Component {
 
@@ -210,6 +211,7 @@ class Routes extends Component {
                         {/* Mapa de Pedidos */}
 
                         <Route path="/mapa" exact component={AsignarPedido} />
+                        <Route path="/order/editar-orders/:orderId" exact component={EditarOrder} />
 
                     </Switch>
                 </Router>

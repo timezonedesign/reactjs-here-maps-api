@@ -51,6 +51,7 @@ class MapaPedidos extends Component {
             }
               var platform = new window.H.service.Platform({
                 apikey: "SjrlBpFRW1Pv024lspKZ40wpc0KTwDynySLGaLVk_JY"
+                // apikey: "AIzaSyDFJfmRt08bR_zjkTBUjzpnibEcMgUvmKs"
               });
               var defaultLayers = platform.createDefaultLayers();
               

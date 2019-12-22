@@ -1,78 +1,80 @@
 import React, { Component } from 'react';
-import LineTo from "react-lineto";
+import { Link } from 'react-router-dom';
+
+import SortableTbl from "react-sort-search-table";
+
 
 //Redux
 
-var line = [];
+const columnButtonStyle = {
+    maxWidth: '100%',
+    minWidth: '100%',
+    paddingTop: 3,
+};
+
+const buttonStyle = {
+    marginLeft: 10,
+    width: 80,
+};
+
+let col = ["Order", "Delivery", "Actions"];
+let tHead = [
+    "Order",
+    "Delivery",
+    "Acciones",
+];
+
+class ActionOrderComponent extends React.Component {
+
+  render() {
+    const { id } = this.props.rowData;
+    return (
+        <td style={columnButtonStyle}>
+
+            <Link style={buttonStyle} to={{
+                pathname : `/order/editar-orders/${id}`,
+                state : this.props.rowData
+                }} className="btn btn-warning">
+                Editar
+            </Link>
+
+        </td> 
+    );
+  }
+}
 
 class OrderBox extends React.Component {
 
-    setOrder(id) {
-        if (line.length === 0) line.push(id);
-        else line[0] = id;
-        // console.log(line);
-    };
-
-    setDelivery(id) {
-        if (line.length === 1) {
-            line[1] = id;
-            this.props.handleLine(line);
-            line = [];
-            this.forceUpdate();
-        }
-    };
-
     render() {
+
         const pedidos = this.props.pedidos;
-        const empleados = this.props.empleados;
 
-        var orders = pedidos.map((order, key) => (
-            <div 
-                className={ "order" + order.id } 
-                style={{ width: "50%", margin: "10px auto", fontSize: "18px", borderLeft: "5px solid #e69a57", padding: "10px", boxShadow: "1px 1px 1px 1px grey" }} 
-                key={key}
-                onClick={() => this.setOrder(order.id)} 
-            >
-                { "Order " + order.id }
-            </div>
-        ));
-
-        var deliveries = empleados.map((delivery, key) => (
-            <div 
-                className={ "delivery" + delivery.id } 
-                style={{ width: "50%", margin: "10px auto", textAlign: "right", fontSize: "18px", borderRight: "5px solid #e69a57", padding: "10px", boxShadow: "1px 1px 1px 1px grey" }} 
-                key={key}
-                onClick={() => this.setDelivery(delivery.id)} 
-            >
-                { delivery.Name + " " + delivery.LastName }
-            </div>
-        ));
-
-        var lines = [];
-        for (var i = 0; i < pedidos.length; i++) {
-            // console.log(pedidos[i].id);
-            lines.push({
-                order: pedidos[i].id,
-                delivery: pedidos[i].Delivery.id
+        var orders = [];
+        for(var i = 0; i < pedidos.length; i++) {
+            orders.push({
+                id: pedidos[i].id,
+                Order: "Order " + pedidos[i].id,
+                Delivery: pedidos[i].Delivery.Name + " " + pedidos[i].Delivery.LastName,
+                DeliveryId: pedidos[i].Delivery.id,
             });
         }
 
-        var lineTag = lines.map((line, key) => (
-            <LineTo from={ "order" + line.order } to={ "delivery" + line.delivery } key={key} fromAnchor="middle left"
-                toAnchor="middle right" borderColor="#e69a57"/>
-        ));
-
         return (
-            <React.Fragment>
-                <h3 style={{ margin: "30px 0", textAlign: "center" }} >Order</h3>
-                <div id="order">
-                    <div style={{ width: "40%", margin: "0 10% 0 5%" }}>{deliveries}</div>
-                    <div style={{ width: "40%", margin: "0 5% 0 10%" }}>{orders}</div>
-                    {lineTag}
-                </div>
-            </React.Fragment>
+            <div style={{ width: "95%", margin: "30px auto" }}>
+
+                <SortableTbl tblData = {orders}
+                    tHead={tHead}
+                    customTd={[
+                                {custd: (ActionOrderComponent), keyItem: "Actions"},
+                                ]}
+                    dKey={col}
+                    search={true}
+                    defaultCSS={true}
+                />
+            </div>
         );
-    };
+    }
+    
 }
 
 export default OrderBox;

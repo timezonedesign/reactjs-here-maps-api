@@ -140,7 +140,7 @@ export const asignarDelivery = (line) => async dispatch => {
                     confirmButtonText: 'Sera Redirigido'
                 })
                 setTimeout(function () {
-                    // window.location.href = "http://localhost:3000/mapa";
+                    window.location.href = "http://localhost:3000/mapa";
                 }, 1500);
             } else {
                 Swal.fire({

@@ -22,21 +22,14 @@ class AsignarPedido extends Component {
       pedidos: {},
       empleados: {},
     };
-    this.handleLine = this.handleLine.bind(this);
+    // this.handleLine = this.handleLine.bind(this);
   }
-  componentDidMount() {
-    setInterval(function () {
-      // this.setState({
-      //   count: this.state.count + 1
-      // });
-      this.props.mostrarPedidos();
-      this.props.mostrarEmpleados();
-    }.bind(this), 2000);
-  }
-  handleLine(param) {
-    this.props.asignarDelivery(param);
-    // this.forceUpdate();
-  };
+  // componentDidMount() {
+  // }
+  // handleLine(param) {
+  //   this.props.asignarDelivery(param);
+  //   // this.forceUpdate();
+  // };
 
   componentWillMount() {
     this.props.mostrarPedidos();
