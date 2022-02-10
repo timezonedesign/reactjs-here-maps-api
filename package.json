@@ -20,7 +20,7 @@
     "material-design-icons": "^3.0.1",
     "material-ui": "^0.20.2",
     "namor": "^1.1.1",
-    "node-sass": "^4.13.0",
+    "node-sass": "^7.0.0",
     "ra-data-json-server": "^2.6.0",
     "ra-language-spanish": "^1.0.0",
     "react": "^16.8.0",
